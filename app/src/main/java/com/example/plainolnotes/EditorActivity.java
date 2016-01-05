@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -17,6 +20,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText editor;
     private String noteFilter;
     private String oldText;
+    private String creationDate;
+    private TextView editor2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,7 @@ public class EditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editor);
 
         editor = (EditText) findViewById(R.id.editText);
+        editor2 = (TextView) findViewById(R.id.editorDate);
 
         Intent intent = getIntent();
 
@@ -39,8 +45,11 @@ public class EditorActivity extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(uri, DBOpenHelper.ALL_COLUMNS, noteFilter, null, null);
             cursor.moveToFirst();
             oldText = cursor.getString(cursor.getColumnIndex(DBOpenHelper.NOTE_TEXT));
+            creationDate = cursor.getString(cursor.getColumnIndex(DBOpenHelper.NOTE_CREATED));
             editor.setText(oldText);
+            editor2.setText("Note created : " + creationDate);
             editor.requestFocus();
+
         }
     }
 
